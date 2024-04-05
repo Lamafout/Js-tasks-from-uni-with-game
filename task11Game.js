@@ -67,6 +67,8 @@ class Bullet{
         this.cursorYWhenShoot = cursY
         this.damage = 5
         allBullets.push(this)
+
+        //воспроизведение звука выстрела
         let sound = new Audio('./audio/pistolShoot.mp3')
         sound.play()
     }
