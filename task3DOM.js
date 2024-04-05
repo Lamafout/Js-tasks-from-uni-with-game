@@ -1,0 +1,1 @@
+document.querySelector('.task3Result').innerText = 'Количество таблиц на странице: ' + document.getElementsByTagName('table').length

@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Лабы по JS</title>
+    <link rel="stylesheet" href="./style.css">
+</head>
+<body>
+    <div class="tasks">
+        <h1 class="main_header">Лаба по JavaScript</h1>
+        <button class="task">
+            <p class="task_landing">Задание 1</p>
+            <div class="content dateTimer">
+                <p class="dateTimerHeader">ГГГГ ДД ММ ДН, ЧЧ-ММ-СС(am/pm). Расположение снизу от центра</p>
+                <p class="dateTimerResult"></p>
+            </div>
+        </button>
+        <button class="task">
+            <p class="task_landing">Задание 2</p>
+            <div class="content calendar">
+                <div class="calendarTopRow">
+                    <input type="image" src="./images/leftArrow.png" alt="" class="arrow leftArrow">
+                    <div class="monthAndYear">
+                        <h2 class="monthName"></h2>
+                        <h3 class="yearNumber"></h3>
+                    </div>
+                    <input type="image" src="./images/rightArrow.png" alt="" class="arrow rightArrow">
+                </div>
+                <div class="weekDays">
+                    <p class="weekDayName">Пн</p>
+                    <p class="weekDayName">Вт</p>
+                    <p class="weekDayName">Ср</p>
+                    <p class="weekDayName">Чт</p>
+                    <p class="weekDayName">Пт</p>
+                    <p class="weekDayName">Сб</p>
+                    <p class="weekDayName">Вс</p>
+                </div>
+                <div class="calendarResult">
+                </div>
+            </div>
+        </button>
+        <button class="task">
+            <p class="task_landing">Задание 3</p>
+            <div class="content task3">
+                <p class="task3About">Вывести количество таблиц в DOM-дереве. Так как таковых нет, добавим одну:</p>
+                <table>
+                    <caption>Статистика по дистрибутивам Linux</caption>
+                    <thead>
+                        <tr>
+                            <th>Название дистрибутива</th>
+                            <th>Кто обычно исопльзует</th>
+                            <th>Использовал ли я</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Ubuntu</td>
+                            <td>Начинающие линуксоиды и позеры</td>
+                            <td>Да, мой первый и действующий дистрибутив</td>
+                        </tr>
+                        <tr>
+                            <td>Mint</td>
+                            <td>Начинающие, которые не до конца осознают, что дизайн винды ужасен</td>
+                            <td>Да, но недолго и ещё в школе в качестве развлечения</td>
+                        </tr>
+                        <tr>
+                            <td>Arch</td>
+                            <td>Гигачады-токсики</td>
+                            <td>Да, но при установке забыл установить сетевой дравйвер, а также случайно снёс дуалбут винду</td>
+                        </tr>
+                    </tbody>
+                </table>
+                <p class="task3Result"></p>
+            </div>
+        </button>
+        <button class="task">
+            <p class="task_landing">Задание 4</p>
+            <div class="content blocks">
+                <p class="'blocksAbout">Каждые 50мс блок увеличивается на 50% и вращается на 90deg</p>
+                <p class="blocksInstruction">Нажмите на блок для его деформации</p>
+                <div class="blocksContainer">
+                    <div class="block firstBlock">1</div>
+                    <div class="block secondBlock">2</div>
+                    <div class="block thirdBlock">3</div>
+                </div>
+                <p>Для справки: 50мс - это ОЧЕНЬ мало</p>
+            </div>
+        </button>
+        <button class="task">
+            <p class="task_landing">Задание 5</p>
+            <div class="content elems">
+                <p class="elemsAbout">Создание и удаление блоков внутри div</p>
+                <div class="elemsResultContainer">
+                </div>
+                <div class="elemsProperties">
+                    <p>Выберите свойства нового блока:</p>
+                    <p><input class="elemsRadio" type="radio" value="text" name="properties">Блок с текстом</p>
+                    <p><input class="elemsRadio" type="radio" value="img" name="properties">Рандомная картинка</p>
+                </div>
+            </div>
+        </button>
+        <button class="task">
+            <p class="task_landing">Задание 6</p>
+            <div class="content event">
+                <p class="eventAbout">Свдигать элемент влево при наведении курсором</p>
+                <div class="blockWithEvent">Ну же, ткни меня, давай, давай!</div>
+            </div>
+        </button>
+        <button class="task">
+            <p class="task_landing">Задание 7</p>
+            <div class="content sweet">
+                <div class="sweetContainer">
+                    <div class="sweetHeaderContainer">
+                        <input type="image" class="sweetHeaderButton" src="/images/downArrow.png">
+                        <p class="sweetHeader">Здесь сладости! (Нажми меня)</p>
+                    </div>
+                    <div class="sweetContent">
+                        <ul class="sweetList">
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </button>
+        <button class="task">
+            <p class="task_landing">Задание 8</p>
+            <div class="content transperent">
+                <div class="transperentBlock">
+                    <img src="./images/rickroll.jpg" class="rickrollImage">
+                    <p class="textInside">Never gonna let you down</p>
+                </div>
+            </div>
+        </button>
+        <button class="task">
+            <p class="task_landing">Задание 9-10</p>
+            <div class="content form">
+                <h2 class="formLanding">Оставьте отзыв об игре!</h2>
+                <form action="">
+                    <div class="inputContainer">
+                        <p>Фамилия:</p>
+                        <input type="text" name="surname" class="nameInput someInput surname" placeholder="Иванов">
+                    </div>
+                    <div class="inputContainer">
+                        <p>Имя:</p>
+                        <input type="text" name="firstname" class="nameInput someInput firstname" placeholder="Иван">
+                    </div>
+                    <div class="inputContainer">
+                        <p>Отчество:</p>
+                        <input type="text" name="secondname" class="nameInput someInput secondname" placeholder="Иванович">
+                    </div>
+                    <div class="inputContainer">
+                        <p>Дата рождения:</p>
+                        <input type="date" class="dateInput someInput" placeholder="pro2009">
+                    </div>
+                    <div class="inputContainer">
+                        <p>Факультет:</p>
+                        <input type="text" class="nameInput someInput" placeholder="ФКТиПМ">
+                    </div>
+                    <div class="inputContainer">
+                        <p>Кафедра:</p>
+                        <input type="text" class="nameInput someInput" placeholder="ПМИ">
+                    </div>
+                    <div class="inputContainer">
+                        <p>eMail:</p>
+                        <input type="email" class="emailInput someInput" placeholder="funnydog2009@mail.ru">
+                    </div>
+                    <div class="inputContainer">
+                        <p>Логин:</p>
+                        <input type="text" class="loginInput someInput" placeholder="pro2009">
+                    </div>
+                    <div class="inputContainer">
+                        <p>Пароль:</p>
+                        <input type="password" class="passwordInput someInput firstPasswordTry" placeholder="thEm0$tstr0n&p@$sword">
+                    </div>
+                    <div class="inputContainer">
+                        <p class="errorType"></p>
+                        <input type="password" class="passwordInput someInput secondPaswordTry" placeholder="Повторите пароль">
+                    </div>
+                    <div class="inputContainer">
+                        <p>Отзыв:</p>
+                        <textarea name="recense" cols="30" rows="10" class="textareaRecense" placeholder="Какая же хорошая игра!"></textarea>
+                    </div>
+                    <div class="inputContainer buttonContainer">
+                        <input type="button" class="formButton" value="Send">
+                    </div>
+                </form>
+            </div>
+        </button>
+        <button class="task">
+            <p class="task_landing">Задание 11</p>
+            <div class="content game">
+                <div class="playMenu">
+                    <input type="image" src="./images/rightArrow.png" class="playButton">
+                </div>
+            </div>
+        </button>
+    </div>
+    <script src="./accordeon.js"></script>
+    <script src="./task1Date.js"></script>
+    <script src="./task2Calendar.js"></script>
+    <script src="./task3DOM.js"></script>
+    <script src="./task4Blocks.js"></script>
+    <script src="./task5MakeElems.js"></script>
+    <script src="./task6EventRofl.js"></script>
+    <script src="./task7Sweet.js"></script>
+    <script src="./task8TransperentBlock.js"></script>
+    <script src="./task9and10Form.js"></script>
+    <script src="./task11Game.js"></script>
+</body>
+</html>

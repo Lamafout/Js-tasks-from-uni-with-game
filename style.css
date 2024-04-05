@@ -1,0 +1,369 @@
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+}
+
+.tasks {
+    display: flex;
+    flex-direction: column;
+    background: linear-gradient(to bottom, rgb(96, 148, 225), rgb(63, 197, 241));
+    background-color: rgb(63, 197, 241);
+    padding-left: 15vw;
+    padding-right: 15vw;
+    padding-bottom: 15vw;
+    gap: 5vw;
+    flex-wrap: wrap;
+}
+
+.main_header {
+    font-family: sans-serif;
+    align-self: center;
+    font-size: 3em;
+    color: white;
+}
+
+.task {
+    align-self: center;
+    border: 3px solid white;
+    font-family: sans-serif;
+    transition: all 0.3s;
+    background-color: rgb(96, 148, 225);
+    color: white;
+    font-weight: bold;
+    border-radius: 10px;
+}
+
+.task:hover {
+    background-color: rgb(79, 122, 187);
+    transition: 0.3s;
+}
+
+.task_landing {
+    padding: 30px 170px 30px 170px;
+}
+
+.content {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s;
+}
+
+.content.active {
+    transition: max-height 1s;
+    max-height: 600px;
+    overflow: visible;
+}
+
+.dateTimer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-content: center;
+    gap: 100px;
+}
+
+.calendar{
+    display: flex;
+    flex-direction: column;
+}
+
+.calendarResult {
+    align-self: center;
+    display: grid;
+    grid-template-columns: repeat(7, 5vw);
+    grid-template-rows: repeat(6, 5vw);
+    border-radius: 10px;
+    gap: 5px;
+}
+
+.calendarTopRow {
+    display: flex;
+    justify-content: space-between;
+}
+
+.monthAndYear {
+    display: flex;
+    flex-direction: column;
+}
+.monthName {
+    align-self: flex-start;
+    align-self: center;
+}
+.yearNumber {
+    align-self: flex-start;
+    margin-top: -15px;
+    align-self: center;
+}
+.arrow{
+    width: 5vw;
+    max-width: 50px;
+    height: 5vw;
+    max-height: 50px;
+    align-self: center;
+}
+.weekDays{
+    display: flex;
+    justify-content: space-around;
+}
+.weekDayName{
+    text-align: center;
+}
+
+.task3{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 100px;
+}
+table{
+    border: 2px solid white;
+    border-radius: 10px;
+}
+td{
+    border: 2px solid white;
+}
+th{
+    border: 2px solid white;
+}
+
+.blocks{
+    display: flex;
+    flex-direction: column;
+    gap: 100px;
+}
+.blocksContainer{
+    display: flex;
+    justify-content: space-around;
+    align-content: center;
+}
+.block{
+    border: 2px solid white;
+    border-radius: 10px;
+    max-width: 500px;
+    max-height: 500px;
+    height: 60px;
+    width: 60px;
+    text-align: center;
+    transition: 1s;
+}
+.firstBlock{
+    background-color: rgb(220, 59, 59);
+}
+.secondBlock{
+    background-color: rgb(129, 59, 220);
+}
+.thirdBlock{
+    background-color: rgb(75, 220, 59);
+}
+
+/* Задание 5 на добавление элементов */
+.elems{
+    display: flex;
+    justify-content:space-between;
+    flex-direction: column;
+}
+.elemsResultContainer{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    align-content: center;
+    border-radius: 10px;
+    background-color: rgb(79, 122, 187);
+    padding: 0 15px 0 15px;
+}
+.elemsProperties{
+    display: flex;
+    flex-direction: column;
+}
+.elemsRadio{
+    transform: scale(2.0);
+}
+
+/* Задание 6 на использование событий */
+.event{
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-content: center;
+}
+.blockWithEvent{
+    width: 100px;
+    min-height: 100px;
+    align-self: center;
+    border: 2px solid white;
+    border-radius: 10px;
+    font-size: x-small;
+    text-align: center;
+}
+
+/* Задание 7 на сладости */
+.sweetHeaderContainer{
+    display: flex;
+    padding: 0 15px 0 15px;
+    width: 100%;
+    gap: 10px;
+}
+.sweetHeaderButton{
+    width: 40px;
+    height: 30px;
+}
+.sweetHeader{
+    margin-top: -1px;
+}
+.sweetContent{
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.5s;
+}
+.someSweet:hover{
+    transition: 0.3s;
+    text-shadow: 0px 0px 15px rgb(198, 166, 241);
+}
+
+/* Задание 8 на исчезающий блок */
+.transperentBlock {
+    width: 15vw;
+    height: 15vw;
+    border-radius: 10px;
+    margin-left: 25%;
+    position: relative;
+}
+  
+.rickrollImage {
+    width: 100%;
+    border-radius: 10px;
+    position: relative;
+    z-index: 2;
+    opacity: 0;
+}
+.textInside {
+    transform: translateY(-150px);
+    position: relative;
+    z-index: 1;
+}
+  
+/* Задания 9-10 на форму с регексами*/
+.inputContainer{
+    display: flex;
+    justify-content: space-between;
+    padding: 0 20px 0 20px;
+}
+.nameInput{
+    height: 40px;
+}
+.someInput{
+    border-radius: 10px;
+    border-style: none;
+    padding-left: 5px;
+    border: 2px solid rgb(89, 97, 202);
+    transition: 0.4s;
+    background-color: rgb(207, 207, 237);
+}
+.someInput:focus{
+    outline: none;
+    transition: 0.4s;
+    box-shadow: 0 0 20px white;
+    background-color: white;
+}
+.emailInput{
+    height: 40px;
+}
+.dateInput{
+    font-family: sans-serif;
+    height: 40px;
+}
+.loginInput{
+    height: 40px;
+}
+.passwordInput{
+    height: 50px;
+}
+.errorType{
+    font-size: small;
+    color: red;
+}
+.buttonContainer{
+    justify-content: center;
+    padding: 20px;
+}
+.formButton{
+    font-size: large;
+    color: white;
+    background-color: rgb(79, 122, 187);
+    border-radius: 10px;
+    border-style: groove;
+    border-color: white;
+    padding: 10px 20px 10px 20px;
+    transition: 0.3s;
+}
+.formButton:hover{
+    background-color: rgb(49, 92, 157);
+    transition: 0.3s;
+}
+.formButton:disabled{
+    background-color: gray;
+}
+.inputContainer{
+    min-width: 600px;
+}
+.textareaRecense{
+    border-radius: 10px;
+    border-style: none;
+    padding-left: 5px;
+    border: 2px solid rgb(89, 97, 202);
+    transition: 0.4s;
+    background-color: rgb(207, 207, 237);
+}
+.textareaRecense:focus{
+    outline: none;
+    transition: 0.4s;
+    box-shadow: 0 0 20px white;
+    background-color: white;
+}
+
+/* Задание 11 - игра */
+.game{
+    width: 750px;
+}
+.playMenu{
+    height: 750px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+.playButton{
+    width: 100px;
+    align-self: center;
+}
+.gameMap{
+    width: 750px;
+    height: 750px;
+    background-color: rgb(218, 161, 209);
+    position: relative;
+}
+.gameCharacter{
+    width: 50px;
+    height: 50px;
+    background-color: blue;
+    transform: rotate(0deg);
+    position: absolute;
+    z-index: 2;
+}
+.gameBullet{
+    width: 10px;
+    height: 5px;
+    background-color: black;
+    transform: rotate(0deg);
+    position: absolute;
+    z-index: 1;
+}
+.monster{
+    width: 50px;
+    height: 50px;
+    background-color: rgb(51, 123, 20);
+    transform: rotate(0deg);
+    position: absolute;
+    z-index: 2;
+    opacity: 1;
+}
