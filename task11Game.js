@@ -154,8 +154,10 @@ function gameStart(){
     gamer.draw()
     
     // появление препятствий
-    let wall = new Wall()
-    wall.doBorn(100, 100, 100, 300)
+    let wall1 = new Wall()
+    wall1.doBorn(100, 100, 100, 300)
+    let wall2 = new Wall()
+    wall2.doBorn(500, 300, 100, 300)
 
     //обработка кликов по игрвому полю
     gameContent.addEventListener('click', (event)=>{
@@ -230,54 +232,53 @@ function gameStart(){
         // ХОДЬБА в стороны, которые были выбраны игроком
         if (isWalkingUp) {
             //проверка, не стоит ли на пути препятствие
-            let moveFlag = false
+            let moveFlag = 0
             allWalls.forEach((wall)=>{
                 if (((gamer.positionX + gamer.div.offsetWidth) < (wall.positionX) || (gamer.positionX) > (wall.positionX + wall.div.offsetWidth))
-                    || (((gamer.positionY) - (wall.positionY + wall.div.offsetHeight) >= 8) || (gamer.positionY) < (wall.positionY + wall.div.offsetHeight))) {
-                    moveFlag = true
+                || (((gamer.positionY) - (wall.positionY + wall.div.offsetHeight) >= 8) || (gamer.positionY) < (wall.positionY + wall.div.offsetHeight))) {
+                    moveFlag++
                 }
             })
-            if (moveFlag) {
+            if (moveFlag == allWalls.length) {
                 gamer.move(0, -8)           
             }
-            console.log('gamerX: ', gamer.positionX, 'gamerY: ', gamer.positionY)
         }
         if (isWalkingLeft) {
             //проверка, не стоит ли на пути препятствие
-            let moveFlag = false
+            let moveFlag = 0
             allWalls.forEach((wall)=>{
                 if (((gamer.positionY + gamer.div.offsetHeight) < (wall.positionY) || (gamer.positionY) > (wall.positionY + wall.div.offsetHeight))
                     || (((gamer.positionX) - (wall.positionX + wall.div.offsetWidth) >= 8) || (gamer.positionX) < (wall.positionX + wall.div.offsetWidth))) {
-                    moveFlag = true
+                    moveFlag ++
                 }
             })
-            if (moveFlag) {         
+            if (moveFlag == allWalls.length) {         
                 gamer.move(-8, 0)
             }
         }
         if (isWalkingDown) {
             //проверка, не стоит ли на пути препятствие
-            let moveFlag = false
+            let moveFlag = 0
             allWalls.forEach((wall)=>{
                 if (((gamer.positionX + gamer.div.offsetWidth) < (wall.positionX) || (gamer.positionX) > (wall.positionX + wall.div.offsetWidth))
                     || (((gamer.positionY + gamer.div.offsetHeight) - (wall.positionY) <= -8) || (gamer.positionY > (wall.positionY + wall.div.offsetHeight)))) {
-                    moveFlag = true
+                    moveFlag ++
                 }
             })
-            if (moveFlag) {           
+            if (moveFlag == allWalls.length) {           
                 gamer.move(0, 8)
             }
         }
         if (isWalkingRight) {
             //проверка, не стоит ли на пути препятствие
-            let moveFlag = false
+            let moveFlag = 0
             allWalls.forEach((wall)=>{
                 if (((gamer.positionY + gamer.div.offsetHeight) < (wall.positionY) || (gamer.positionY) > (wall.positionY + wall.div.offsetHeight))
                     || (((gamer.positionX + gamer.div.offsetWidth) - (wall.positionX) <= -8) || (gamer.positionX > (wall.positionX + wall.div.offsetWidth)))) {
-                    moveFlag = true
+                    moveFlag ++
                 }
             })
-            if (moveFlag) {         
+            if (moveFlag == allWalls.length) {         
                 gamer.move(8, 0)
             }
         }
