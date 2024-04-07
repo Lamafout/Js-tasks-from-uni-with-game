@@ -367,3 +367,8 @@ th{
     z-index: 2;
     opacity: 1;
 }
+.gameWall{
+    background-color:brown;
+    z-index: 3;
+    position: absolute;
+}

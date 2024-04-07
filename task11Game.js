@@ -1,4 +1,5 @@
 class Monster{
+    //TODO сделать возможность спавна стрелка
     constructor(typeName){
         this.div
         this.divName = typeName
@@ -96,8 +97,30 @@ class Bullet{
         }
     }
 }
+
+class Wall{
+    constructor(){
+        this.div
+        this.positionX
+        this.positionY
+    }
+
+    doBorn(posX, posY, width, height){
+        this.positionX = posX
+        this.positionY = posY
+        this.div = document.createElement( 'div')
+        this.div.style.left = this.positionX + 'px'
+        this.div.style.top = this.positionY + 'px'
+        this.div.style.width = width + 'px'
+        this.div.style.height = height + 'px'
+        document.querySelector('.gameMap').appendChild(this.div)
+        this.div.className = 'gameWall'
+        allWalls.push(this)
+    }
+}
 let allMonsters = []
 let allBullets = []
+let allWalls = []
 
 // обработчик play menu
 let playButton = document.querySelector('.playButton')
@@ -117,15 +140,22 @@ function gameStart(){
     //удаление игрового меню
     playMenu.remove()
     playButton.remove()
-
-    //создание карты и главного персонажа на ней
     let gameContent = document.querySelector('.game')
+
+    
+    //создание карты
     let gameMap = document.createElement('div')
     gameMap.className = 'gameMap'
     gameContent.appendChild(gameMap)
+    
+    // создание главного персонажа
     let gamer = new Human('gameCharacter')
     gamer.doBorn(350, 350)
     gamer.draw()
+    
+    // появление препятствий
+    let wall = new Wall()
+    wall.doBorn(100, 100, 100, 300)
 
     //обработка кликов по игрвому полю
     gameContent.addEventListener('click', (event)=>{
@@ -134,6 +164,7 @@ function gameStart(){
 
     //отслеживание положения курсора мыши
     let cursorX, cursorY
+    // TODO починить то, что курсор слетает при наведении непосредственно на врага
     gameContent.addEventListener('mousemove', (event)=>{
         cursorX = event.offsetX
         cursorY = event.offsetY
@@ -196,25 +227,66 @@ function gameStart(){
             bullet.fly()
         })
 
-        // ходьба в стороны, которые были выбраны игроком
+        // ХОДЬБА в стороны, которые были выбраны игроком
         if (isWalkingUp) {
-            gamer.move(0, -8)
+            //проверка, не стоит ли на пути препятствие
+            let moveFlag = false
+            allWalls.forEach((wall)=>{
+                if (((gamer.positionX + gamer.div.offsetWidth) < (wall.positionX) || (gamer.positionX) > (wall.positionX + wall.div.offsetWidth))
+                    || (((gamer.positionY) - (wall.positionY + wall.div.offsetHeight) >= 8) || (gamer.positionY) < (wall.positionY + wall.div.offsetHeight))) {
+                    moveFlag = true
+                }
+            })
+            if (moveFlag) {
+                gamer.move(0, -8)           
+            }
+            console.log('gamerX: ', gamer.positionX, 'gamerY: ', gamer.positionY)
         }
         if (isWalkingLeft) {
-            gamer.move(-8, 0)
+            //проверка, не стоит ли на пути препятствие
+            let moveFlag = false
+            allWalls.forEach((wall)=>{
+                if (((gamer.positionY + gamer.div.offsetHeight) < (wall.positionY) || (gamer.positionY) > (wall.positionY + wall.div.offsetHeight))
+                    || (((gamer.positionX) - (wall.positionX + wall.div.offsetWidth) >= 8) || (gamer.positionX) < (wall.positionX + wall.div.offsetWidth))) {
+                    moveFlag = true
+                }
+            })
+            if (moveFlag) {         
+                gamer.move(-8, 0)
+            }
         }
         if (isWalkingDown) {
-            gamer.move(0, 8)
+            //проверка, не стоит ли на пути препятствие
+            let moveFlag = false
+            allWalls.forEach((wall)=>{
+                if (((gamer.positionX + gamer.div.offsetWidth) < (wall.positionX) || (gamer.positionX) > (wall.positionX + wall.div.offsetWidth))
+                    || (((gamer.positionY + gamer.div.offsetHeight) - (wall.positionY) <= -8) || (gamer.positionY > (wall.positionY + wall.div.offsetHeight)))) {
+                    moveFlag = true
+                }
+            })
+            if (moveFlag) {           
+                gamer.move(0, 8)
+            }
         }
         if (isWalkingRight) {
-            gamer.move(8, 0)
+            //проверка, не стоит ли на пути препятствие
+            let moveFlag = false
+            allWalls.forEach((wall)=>{
+                if (((gamer.positionY + gamer.div.offsetHeight) < (wall.positionY) || (gamer.positionY) > (wall.positionY + wall.div.offsetHeight))
+                    || (((gamer.positionX + gamer.div.offsetWidth) - (wall.positionX) <= -8) || (gamer.positionX > (wall.positionX + wall.div.offsetWidth)))) {
+                    moveFlag = true
+                }
+            })
+            if (moveFlag) {         
+                gamer.move(8, 0)
+            }
         }
 
         // отсчёт 5 секунд
         fiveSeconds += 10
 
         // рождение монстра
-        if (fiveSeconds == 1000){
+        if (fiveSeconds == 5000){
             fiveSeconds = 0
             let monster = new Monster('monster')
             monster.doBorn(Math.random() * 750, Math.random() * 750)
@@ -241,6 +313,18 @@ function gameStart(){
             allBullets.forEach((bullet, index) =>{
                 if (Math.abs(bullet.positionX - monster.positionX) < monster.div.offsetWidth && Math.abs(bullet.positionY - monster.positionY) < monster.div.offsetHeight){
                     monster.getDamage(bullet.damage)
+                    bullet.div.remove()
+                    allBullets.splice(index, 1)
+                    return
+                }
+            })
+        })
+
+        // достигание пуль стен
+        allWalls.forEach((wall) =>{
+            allBullets.forEach((bullet, index) =>{
+                if (((bullet.positionX > wall.positionX) && (Math.abs(bullet.positionX - wall.positionX) < wall.div.offsetWidth)) 
+                && ((bullet.positionY > wall.positionY) && Math.abs(bullet.positionY - wall.positionY) < wall.div.offsetHeight)){
                     bullet.div.remove()
                     allBullets.splice(index, 1)
                     return
