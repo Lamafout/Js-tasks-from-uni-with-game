@@ -152,6 +152,9 @@ function gameStart(){
     let gamer = new Human('gameCharacter')
     gamer.doBorn(350, 350)
     gamer.draw()
+
+    //скорость мностров
+    let speedMonster = 3
     
     // появление препятствий
     let wall1 = new Wall()
@@ -166,7 +169,7 @@ function gameStart(){
 
     //отслеживание положения курсора мыши
     let cursorX, cursorY
-    // TODO починить то, что курсор слетает при наведении непосредственно на врага
+    // TODO починить то, что курсор слетает при наведении непосредственно на врага/препятитствие
     gameContent.addEventListener('mousemove', (event)=>{
         cursorX = event.offsetX
         cursorY = event.offsetY
@@ -287,8 +290,8 @@ function gameStart(){
         fiveSeconds += 10
 
         // рождение монстра
-        if (fiveSeconds == 5000){
-            fiveSeconds = 0
+        if (fiveSeconds == 1000){
+            // fiveSeconds = 0
             let monster = new Monster('monster')
             monster.doBorn(Math.random() * 750, Math.random() * 750)
             allMonsters.push(monster)
@@ -305,7 +308,47 @@ function gameStart(){
 
             // постепенное движение монстра к игроку
             if (Math.abs(gamer.positionX - monster.positionX) > 70 || Math.abs(gamer.positionY - monster.positionY) > 70){
-                autoMove(monster, 5)
+                let moveFlag = 0
+
+                allWalls.forEach((wall, index) =>{
+                    let downMove = false, leftMove = false, upMove = false, rightMove = false
+
+                    // движение вниз
+                    if ((((monster.positionX + monster.div.offsetWidth) <= (wall.positionX)) || ((monster.positionX) >= (wall.positionX + wall.div.offsetWidth)))
+                        || ((monster.positionY + monster.div.offsetHeight + speedMonster * Math.sin(monster.lookSide * Math.PI / 180)) <= (wall.positionY))
+                        || ((monster.positionY) > (wall.positionY))){
+                            downMove = true
+                    }
+
+                    //движение влево
+                    if ((((monster.positionY + monster.div.offsetHeight) <= (wall.positionY)) || ((monster.positionY) >= (wall.positionY + wall.div.offsetHeight)))
+                        || ((monster.positionX + speedMonster * Math.cos(monster.lookSide * Math.PI / 180)) >= (wall.positionX + monster.div.offsetWidth))
+                        || ((monster.positionX) < (wall.positionX))){
+                            leftMove = true
+                    }
+
+                    // TODO движение вверх тут какая-то магия
+                    if ((((monster.positionX + monster.div.offsetWidth) <= (wall.positionX)) || ((monster.positionX) >= (wall.positionX + wall.div.offsetWidth)))
+                        || ((monster.positionY + speedMonster * Math.sin(monster.lookSide * Math.PI / 180)) >= (wall.positionY + wall.div.offsetHeight))
+                        || ((monster.positionY) < (wall.positionY))){
+                            upMove = true
+                    }
+
+                    // движение вправо
+                    if ((((monster.positionY + monster.div.offsetHeight) <= (wall.positionY)) || ((monster.positionY) >= (wall.positionY + wall.div.offsetHeight)))
+                        || ((monster.positionX + monster.div.offsetWidth + speedMonster * Math.cos(monster.lookSide * Math.PI / 180)) <= (wall.positionX))
+                        || ((monster.positionX) > (wall.positionX))){
+                            rightMove = true
+                    }
+
+                    if (downMove == upMove && downMove == rightMove && downMove == leftMove && downMove){
+                        moveFlag ++
+                    }
+                    console.log(index, downMove, leftMove, upMove, rightMove)
+                })
+                if (moveFlag == allWalls.length){
+                    autoMove(monster, speedMonster)
+                }
             }
         })
 
@@ -346,7 +389,7 @@ function turnCharacter(character, cursorX, cursorY){
 }
 
 function autoMove(character, speed){
-    let angle = parseFloat(character.lookSide)
+    let angle = character.lookSide
     character.positionX += speed * Math.cos(angle * Math.PI / 180)
     character.positionY += speed * Math.sin(angle * Math.PI / 180)
     character.div.style.left = character.positionX + 'px'
