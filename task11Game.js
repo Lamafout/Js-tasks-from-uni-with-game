@@ -320,14 +320,14 @@ function gameStart(){
                             downMove = true
                     }
 
-                    //движение влево
+                    // движение влево
                     if ((((monster.positionY + monster.div.offsetHeight) <= (wall.positionY)) || ((monster.positionY) >= (wall.positionY + wall.div.offsetHeight)))
-                        || ((monster.positionX + speedMonster * Math.cos(monster.lookSide * Math.PI / 180)) >= (wall.positionX + monster.div.offsetWidth))
+                        || ((monster.positionX + speedMonster * Math.cos(monster.lookSide * Math.PI / 180)) >= (wall.positionX + wall.div.offsetWidth))
                         || ((monster.positionX) < (wall.positionX))){
                             leftMove = true
                     }
 
-                    // TODO движение вверх тут какая-то магия
+                    // движение вверх
                     if ((((monster.positionX + monster.div.offsetWidth) <= (wall.positionX)) || ((monster.positionX) >= (wall.positionX + wall.div.offsetWidth)))
                         || ((monster.positionY + speedMonster * Math.sin(monster.lookSide * Math.PI / 180)) >= (wall.positionY + wall.div.offsetHeight))
                         || ((monster.positionY) < (wall.positionY))){
@@ -341,10 +341,9 @@ function gameStart(){
                             rightMove = true
                     }
 
-                    if (downMove == upMove && downMove == rightMove && downMove == leftMove && downMove){
+                    if (upMove && rightMove && leftMove && downMove){
                         moveFlag ++
                     }
-                    console.log(index, downMove, leftMove, upMove, rightMove)
                 })
                 if (moveFlag == allWalls.length){
                     autoMove(monster, speedMonster)
