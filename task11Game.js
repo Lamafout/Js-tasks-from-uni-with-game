@@ -308,7 +308,15 @@ function gameStart(){
 
             // постепенное движение монстра к игроку
             if (Math.abs(gamer.positionX - monster.positionX) > 70 || Math.abs(gamer.positionY - monster.positionY) > 70){
-                let moveFlag = 0
+                let moveFlag = {
+                    down: new Array(allWalls.length).fill(0),
+                    left: new Array(allWalls.length).fill(0),
+                    up: new Array(allWalls.length).fill(0),
+                    right: new Array(allWalls.length).fill(0),
+                    sum: function(){
+                        return this.down.filter(el => el == 1).length + this.left.filter(el => el == 1).length + this.up.filter(el => el == 1).length + this.right.filter(el => el == 1).length
+                    }
+                }
 
                 allWalls.forEach((wall, index) =>{
                     let downMove = false, leftMove = false, upMove = false, rightMove = false
@@ -341,12 +349,99 @@ function gameStart(){
                             rightMove = true
                     }
 
-                    if (upMove && rightMove && leftMove && downMove){
-                        moveFlag ++
+                    // инкрементируем соответствующие поля флага
+                    // затем будем, опираясь на значения этих полей, выяснять, куда именно не может пойти монстр
+                    if (downMove){
+                        moveFlag.down[index]++
+                    }
+                    if (leftMove){
+                        moveFlag.left[index]++
+                    }
+                    if (upMove){
+                        moveFlag.up[index]++
+                    }
+                    if (rightMove){
+                        moveFlag.right[index]++
                     }
                 })
-                if (moveFlag == allWalls.length){
+                // TODO сделать обход препятствий монстрами
+                // сумма moveFlag - это сумма количества обходимых препятствий для каждой стороны 
+                if (moveFlag.sum() == allWalls.length * 4){
                     autoMove(monster, speedMonster)
+                }
+                else{
+                    // проверка, в какую сторону обходить, используя положение монстра относительно середины препятствия (бета)
+                    // TODO придумать решение получше
+                    // TODO исравить, что он не двигается в углах
+                    // сначала проверим, что идти нельзя вниз
+                    if (moveFlag.down.filter(el => el == 1).length < allWalls.length){
+                        // если ему доступен как лево, так и право
+                        if (moveFlag.left.filter(el => el == 1).length == moveFlag.right.filter(el => el == 1).length){
+                            // переменная, которая определяет индекс стены, через которую не может пройти монстр вниз
+                            let errorIndex = moveFlag.down.indexOf(0)
+                            // проверка на то, ближе к левому или правому краю монстр
+                            if ((monster.positionX + monster.div.offsetWidth) <= (allWalls[errorIndex].positionX + allWalls[errorIndex].div.offsetWidth / 2)){
+                                // монстр двигается влево, так как левый край ему ближе
+                                monster.lookSide = 180
+                                autoMove(monster, speedMonster)
+                            }
+                            else{
+                                monster.lookSide = 0
+                                autoMove(monster, speedMonster)
+                            }
+                        }
+                        // TODO else для определения доступной стороны
+                    }
+                    // проверка, что нельзя идти вверх
+                    if (moveFlag.up.filter(el => el == 1).length < allWalls.length){
+                        // далее аналогичная логика с повротом при отсутствии возможности движения вниз
+                        if (moveFlag.left.filter(el => el == 1).length == moveFlag.right.filter(el => el == 1).length){
+                            let errorIndex = moveFlag.up.indexOf(0)
+                            if ((monster.positionX + monster.div.offsetWidth) <= (allWalls[errorIndex].positionX + allWalls[errorIndex].div.offsetWidth / 2)){
+                                monster.lookSide = 180
+                                autoMove(monster, speedMonster)
+                            }
+                            else{
+                                monster.lookSide = 0
+                                autoMove(monster, speedMonster)
+                            }
+                        }
+                        // TODO else для определения доступной стороны
+                    }
+
+                    // проверка, что нельзя идти влево
+                    if (moveFlag.left.filter(el => el == 1).length < allWalls.length){
+                        // логика аналогично
+                        if (moveFlag.down.filter(el => el == 1).length == moveFlag.up.filter(el => el == 1).length){
+                            let errorIndex = moveFlag.left.indexOf(0)
+                            if (monster.positionY + monster.div.offsetHeight <= allWalls[errorIndex].positionY + allWalls[errorIndex].div.offsetHeight/2){
+                                monster.lookSide = -90
+                                autoMove(monster, speedMonster)
+                            }
+                            else{
+                                monster.lookSide = 90
+                                autoMove(monster, speedMonster)
+                            }
+                        }
+                        //  TODO else для определения доступной стороны
+                    }
+
+                    // проверка, что нельзя идти вправо
+                    if (moveFlag.right.filter(el => el == 1).length < allWalls.length){
+                        // логика аналогично
+                        if (moveFlag.down.filter(el => el == 1).length == moveFlag.up.filter(el => el == 1).length){
+                            let errorIndex = moveFlag.right.indexOf(0)
+                            if (monster.positionY + monster.div.offsetHeight <= allWalls[errorIndex].positionY + allWalls[errorIndex].div.offsetHeight/2){
+                                monster.lookSide = -90
+                                autoMove(monster, speedMonster)
+                            }
+                            else{
+                                monster.lookSide = 90
+                                autoMove(monster, speedMonster)
+                            }
+                        }
+                        //  TODO else для определения доступной стороны
+                    }
                 }
             }
         })
