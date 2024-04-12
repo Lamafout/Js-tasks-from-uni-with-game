@@ -19,11 +19,15 @@ class Monster{
         this.div.style.left = this.positionX + 'px'
         this.div.style.top = this.positionY + 'px'
         this.div.style.transform = 'rotate(' + this.lookSide + 'deg' + ')'
+        this.drawSkin()
+    }
+
+    drawSkin(){
         let image = document.createElement('img')
-        image.style.width = '76px'
-        image.style.height = '36px'
         this.div.appendChild(image)
         image.setAttribute('src', this.imagePath)
+        image.style.width = '70px'
+        image.style.height = '63px'
     }
 
     doBorn(posX, posY) {
@@ -62,6 +66,14 @@ class Human extends Monster{
     shoot(cursorX, cursorY){
         let bullet = new Bullet(this.positionX, this.positionY, this.lookSide, cursorX, cursorY)
         bullet.draw()
+    }
+
+    drawSkin(){
+        let image = document.createElement('img')
+        this.div.appendChild(image)
+        image.setAttribute('src', this.imagePath)
+        image.style.width = '76px'
+        image.style.height = '36px'
     }
 
     doDie(){
@@ -175,10 +187,10 @@ function gameStart(){
     let gamer = new Human('gameCharacter')
     gamer.doBorn(350, 350)
     gamer.draw()
-    let gamerImage = false
+    let gamerImage = 1
 
     //скорость мностров  игрока
-    let speedMonster = 5
+    let speedMonster = 4
     let speedGamer = 5
     
     // появление препятствий
@@ -205,6 +217,7 @@ function gameStart(){
     gameMap.addEventListener('mousedown', (event)=>{
         if (event.button == 0){
             gamer.shoot(cursorX, cursorY)
+            gamerImage = 3
         }
     })
 
@@ -258,13 +271,15 @@ function gameStart(){
         }
 
         // поворот и отрисовка персонажа
-        if (gamerImage){
+        if (gamerImage == 1){
             gamer.imagePath = './images/policeStand1.png'
-            console.log('change1')
         }
-        else{
+        else if (gamerImage == 2){
             gamer.imagePath = './images/policeStand2.png'
-            console.log('change2')
+        }
+        else if (gamerImage == 3){
+            gamer.imagePath = './images/policeShoot.png'
+        
         }
         turnCharacter(gamer, cursorX, cursorY)
 
@@ -274,19 +289,22 @@ function gameStart(){
         })
 
         // анимация движения персонажа
+        if (gamerImage == 3){
+            setTimeout(()=>{
+                gamerImage = 1
+                clearTimeout(this)
+            }, 100)
+        }
         if (isWalkingDown || isWalkingRight || isWalkingLeft || isWalkingUp) {
             animationTimer += 15
-            if (gamerImage && animationTimer >= 150){
-                gamerImage = false
+            if (gamerImage == 1 && animationTimer >= 150){
+                gamerImage = 2
                 animationTimer = 0
             }
-            else if (!gamerImage && animationTimer >= 150){
-                gamerImage = true
+            else if (gamerImage == 2 && animationTimer >= 150){
+                gamerImage = 1
                 animationTimer = 0
             }
-        }
-        else{
-            gamerImage = false
         }
 
         // ХОДЬБА в стороны, которые были выбраны игроком
@@ -354,9 +372,29 @@ function gameStart(){
         if (spawnTimer == 1000){
             spawnTimer= 0
             let monster = new Monster('monster')
-            monster.doBorn(Math.random() * 750, Math.random() * 750)
+
+            // проверка, что монстр не спавнится слишком близко к главному герою или в стене
+            let spawnFlag = false
+            let spawnX, spawnY
+            while (!spawnFlag){
+                spawnX = Math.random() * 750, spawnY = Math.random() * 750
+                spawnFlag = true
+                allWalls.forEach(wall =>{
+                    if ((spawnX > wall.positionX) && (spawnX < wall.positionX + wall.div.offsetWidth)
+                    && (spawnY > wall.positionY) && (spawnY < wall.positionY + wall.div.offsetHeight)) {
+                        spawnFlag = false
+                        console.log('spawn')
+                        return
+                    }
+                })
+                if (!(Math.abs(spawnX - gamer.positionX) > gamer.div.offsetWidth + 150
+                || Math.abs(spawnY - gamer.positionY) > gamer.div.offsetHeight + 150)){
+                    spawnFlag = false
+                }
+            }
+            monster.doBorn(spawnX, spawnY)
             allMonsters.push(monster)
-            monster.imagePath = './images/policeStand1.png'
+            monster.imagePath = './images/monster.png'
             monster.draw()
         }
 
@@ -365,17 +403,6 @@ function gameStart(){
             if (monster.health < 0){
                 monster.doDie()
             }
-
-            // создание флага, контролирующего, что монстр видит игрока
-            // let viewFlag = new Array(allWalls.length).fill(0)
-            // allWalls.forEach((wall, index)=>{
-            //     if (((Math.abs(gamer.positionX - wall.positionX) < gamer.div.offsetWidth)
-            //     && (Math.abs(monster.positionX - wall.positionX) < monster.div.offsetWidth))
-            //     || ((Math.abs(gamer.positionY - wall.positionY) < gamer.div.offsetHeight)
-            //     &&  (Math.abs(monster.positionY - wall.positionY) < monster.div.offsetHeight))) {
-
-            //     }
-            // })
 
             // реализация поворота монстра в сторону игрока
             turnCharacter(monster, gamer.positionX, gamer.positionY)
