@@ -322,23 +322,36 @@ function gameStart(){
 
         // рождение монстра
         if (spawnTimer == 1000){
-            // spawnTimer= 0
+            spawnTimer= 0
             let monster = new Monster('monster')
             monster.doBorn(Math.random() * 750, Math.random() * 750)
             allMonsters.push(monster)
             monster.draw()
         }
 
-        // отрисовка всех моснтров из массива
+        // отрисовка всех моснтров из массива (тут много кода)
         allMonsters.forEach((monster)=>{
             if (monster.health < 0){
                 monster.doDie()
             }
+
+            // создание флага, контролирующего, что монстр видит игрока
+            // let viewFlag = new Array(allWalls.length).fill(0)
+            // allWalls.forEach((wall, index)=>{
+            //     if (((Math.abs(gamer.positionX - wall.positionX) < gamer.div.offsetWidth)
+            //     && (Math.abs(monster.positionX - wall.positionX) < monster.div.offsetWidth))
+            //     || ((Math.abs(gamer.positionY - wall.positionY) < gamer.div.offsetHeight)
+            //     &&  (Math.abs(monster.positionY - wall.positionY) < monster.div.offsetHeight))) {
+
+            //     }
+            // })
+
             // реализация поворота монстра в сторону игрока
             turnCharacter(monster, gamer.positionX, gamer.positionY)
 
             // постепенное движение монстра к игроку
-            if (Math.abs(gamer.positionX - monster.positionX) > 70 || Math.abs(gamer.positionY - monster.positionY) > 70){
+            if ((Math.abs(gamer.positionX - monster.positionX) > gamer.div.offsetWidth + 20 
+            || Math.abs(gamer.positionY - monster.positionY) > gamer.div.offsetHeight + 20)){
                 let moveFlag = {
                     down: new Array(allWalls.length).fill(0),
                     left: new Array(allWalls.length).fill(0),
@@ -395,7 +408,6 @@ function gameStart(){
                         moveFlag.right[index]++
                     }
                 })
-                // TODO сделать обход препятствий монстрами
                 // сумма moveFlag - это сумма количества обходимых препятствий для каждой стороны 
                 if (moveFlag.sum() == allWalls.length * 4){
                     autoMove(monster, speedMonster)
@@ -555,6 +567,6 @@ function createGameOverMenu(){
     gameContent.appendChild(playMenu)
     playMenu.appendChild(playButton)
 
-    playScore.innerHTML = score + timeBonus + ' очков'
+    playScore.innerHTML = Math.floor(score + timeBonus) + ' очков'
     playMenu.appendChild(playScore)
 }
