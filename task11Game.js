@@ -153,14 +153,15 @@ function gameStart(){
     gamer.doBorn(350, 350)
     gamer.draw()
 
-    //скорость мностров
-    let speedMonster = 3
+    //скорость мностров  игрока
+    let speedMonster = 5
+    let speedGamer = 5
     
     // появление препятствий
     let wall1 = new Wall()
-    wall1.doBorn(100, 100, 100, 300)
+    wall1.doBorn(100, 100, 50, 300)
     let wall2 = new Wall()
-    wall2.doBorn(500, 300, 100, 300)
+    wall2.doBorn(550, 300, 50, 300)
 
     //обработка кликов по игрвому полю
     gameContent.addEventListener('click', (event)=>{
@@ -236,53 +237,57 @@ function gameStart(){
         if (isWalkingUp) {
             //проверка, не стоит ли на пути препятствие
             let moveFlag = 0
-            allWalls.forEach((wall)=>{
-                if (((gamer.positionX + gamer.div.offsetWidth) < (wall.positionX) || (gamer.positionX) > (wall.positionX + wall.div.offsetWidth))
-                || (((gamer.positionY) - (wall.positionY + wall.div.offsetHeight) >= 8) || (gamer.positionY) < (wall.positionY + wall.div.offsetHeight))) {
+            allWalls.forEach((wall, index)=>{
+                if ((((gamer.positionX + gamer.div.offsetWidth) <= (wall.positionX)) || ((gamer.positionX) >= (wall.positionX + wall.div.offsetWidth)))
+                || ((gamer.positionY - speedGamer) >= (wall.positionY + wall.div.offsetHeight))
+                || ((gamer.positionY) < (wall.positionY))) {
                     moveFlag++
                 }
             })
             if (moveFlag == allWalls.length) {
-                gamer.move(0, -8)           
+                gamer.move(0, -speedGamer)           
             }
         }
         if (isWalkingLeft) {
             //проверка, не стоит ли на пути препятствие
             let moveFlag = 0
             allWalls.forEach((wall)=>{
-                if (((gamer.positionY + gamer.div.offsetHeight) < (wall.positionY) || (gamer.positionY) > (wall.positionY + wall.div.offsetHeight))
-                    || (((gamer.positionX) - (wall.positionX + wall.div.offsetWidth) >= 8) || (gamer.positionX) < (wall.positionX + wall.div.offsetWidth))) {
+                if ((((gamer.positionY + gamer.div.offsetHeight) <= (wall.positionY)) || ((gamer.positionY) >= (wall.positionY + wall.div.offsetHeight)))
+                || ((gamer.positionX - speedGamer) >= (wall.positionX + wall.div.offsetWidth))
+                || ((gamer.positionX) < (wall.positionX))) {
                     moveFlag ++
                 }
             })
             if (moveFlag == allWalls.length) {         
-                gamer.move(-8, 0)
+                gamer.move(-speedGamer, 0)
             }
         }
         if (isWalkingDown) {
             //проверка, не стоит ли на пути препятствие
             let moveFlag = 0
             allWalls.forEach((wall)=>{
-                if (((gamer.positionX + gamer.div.offsetWidth) < (wall.positionX) || (gamer.positionX) > (wall.positionX + wall.div.offsetWidth))
-                    || (((gamer.positionY + gamer.div.offsetHeight) - (wall.positionY) <= -8) || (gamer.positionY > (wall.positionY + wall.div.offsetHeight)))) {
+                if ((((gamer.positionX + gamer.div.offsetWidth) <= (wall.positionX)) || ((gamer.positionX) >= (wall.positionX + wall.div.offsetWidth)))
+                || ((gamer.positionY + gamer.div.offsetHeight + speedGamer) <= (wall.positionY))
+                || ((gamer.positionY) > (wall.positionY))) {
                     moveFlag ++
                 }
             })
             if (moveFlag == allWalls.length) {           
-                gamer.move(0, 8)
+                gamer.move(0, speedGamer)
             }
         }
         if (isWalkingRight) {
             //проверка, не стоит ли на пути препятствие
             let moveFlag = 0
             allWalls.forEach((wall)=>{
-                if (((gamer.positionY + gamer.div.offsetHeight) < (wall.positionY) || (gamer.positionY) > (wall.positionY + wall.div.offsetHeight))
-                    || (((gamer.positionX + gamer.div.offsetWidth) - (wall.positionX) <= -8) || (gamer.positionX > (wall.positionX + wall.div.offsetWidth)))) {
+                if ((((gamer.positionY + gamer.div.offsetHeight) <= (wall.positionY)) || ((gamer.positionY) >= (wall.positionY + wall.div.offsetHeight)))
+                        || ((gamer.positionX + gamer.div.offsetWidth + speedGamer) <= (wall.positionX))
+                        || ((gamer.positionX) > (wall.positionX))) {
                     moveFlag ++
                 }
             })
             if (moveFlag == allWalls.length) {         
-                gamer.move(8, 0)
+                gamer.move(speedGamer, 0)
             }
         }
 
