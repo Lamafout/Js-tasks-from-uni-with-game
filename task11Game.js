@@ -138,6 +138,7 @@ let timeoutId
 let gameContent = document.querySelector('.game')
 let playButton = document.querySelector('.playButton')
 let playMenu = document.querySelector('.playMenu')
+let playScore = document.querySelector('.playScore')
 playButton.addEventListener('click', (event)=>{
     event.stopPropagation()
     gameStart()
@@ -153,6 +154,7 @@ function gameStart(){
     //удаление игрового меню
     playMenu.remove()
     playButton.remove()
+    playScore.remove()
 
     // создание переменнлй для подсчёта очков
     score = 0
@@ -529,10 +531,16 @@ function autoMove(character, speed){
 }
 
 // конец игры, появляется при смерти гг
-// TODO допилить. Сейчас я на этапе того, что мне надо реализовать появление игрового меню
+// TODO допилить. Сейчас я на этапе того, что мне надо реализовать появление очков
 function gameOver(){
     clearInterval(timeoutId)
     clearMap()
+
+    // очищаем массивы стен, монстров и пуль
+    allBullets.splice(0, allBullets.length)
+    allMonsters.splice(0, allMonsters.length)
+    allWalls.splice(0, allWalls.length)
+
     createGameOverMenu()
 }
 
@@ -542,12 +550,9 @@ function clearMap(){
 }
 
 function createGameOverMenu(){
-    // let menuBackground = document.createElement('div')
-    // menuBackground.className ='playMenu'
-    // let menuButton = document.createElement('input')
-    // menuButton.setAttribute('type', 'button')
-    // menuButton.setAttribute('src', './images/rightArrow.png')
-    // menuButton.className = 'playButton'
     gameContent.appendChild(playMenu)
     playMenu.appendChild(playButton)
+
+    playScore.innerHTML = score + timeBonus + ' очков'
+    playMenu.appendChild(playScore)
 }

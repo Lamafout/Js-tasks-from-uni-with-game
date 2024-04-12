@@ -331,6 +331,7 @@ th{
     display: flex;
     flex-direction: column;
     justify-content: center;
+    gap: 50px
 }
 .playButton{
     width: 100px;
@@ -371,4 +372,7 @@ th{
     background-color:brown;
     z-index: 3;
     position: absolute;
+}
+.playScore{
+    font-size: 30px;
 }
