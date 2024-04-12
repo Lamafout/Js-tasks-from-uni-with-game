@@ -26,8 +26,9 @@ class Monster{
         let image = document.createElement('img')
         this.div.appendChild(image)
         image.setAttribute('src', this.imagePath)
-        image.style.width = '70px'
-        image.style.height = '63px'
+        image.setAttribute('draggable', false)
+        image.style.width = '60px'
+        image.style.height = '54px'
     }
 
     doBorn(posX, posY) {
@@ -72,6 +73,7 @@ class Human extends Monster{
         let image = document.createElement('img')
         this.div.appendChild(image)
         image.setAttribute('src', this.imagePath)
+        image.setAttribute('draggable', false)
         image.style.width = '76px'
         image.style.height = '36px'
     }
@@ -408,8 +410,8 @@ function gameStart(){
             turnCharacter(monster, gamer.positionX, gamer.positionY)
 
             // постепенное движение монстра к игроку
-            if ((Math.abs(gamer.positionX - monster.positionX) > gamer.div.offsetWidth + 20 
-            || Math.abs(gamer.positionY - monster.positionY) > gamer.div.offsetHeight + 20)){
+            if ((Math.abs(gamer.positionX - monster.positionX) > gamer.div.offsetWidth + 10 
+            || Math.abs(gamer.positionY - monster.positionY) > gamer.div.offsetHeight + 10)){
                 let moveFlag = {
                     down: new Array(allWalls.length).fill(0),
                     left: new Array(allWalls.length).fill(0),
@@ -628,3 +630,4 @@ function createGameOverMenu(){
     playScore.innerHTML = Math.floor(score + timeBonus) + ' очков'
     playMenu.appendChild(playScore)
 }
+// TODO таблица рекордов
