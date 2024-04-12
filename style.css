@@ -369,7 +369,7 @@ th{
 .gameWall{
     background-image: url('./images/kirpich.jpg');
     background-repeat: repeat;
-    box-shadow: 0 0 30px black;
+    box-shadow: 0 0 20px black;
     z-index: 3;
     position: absolute;
 }

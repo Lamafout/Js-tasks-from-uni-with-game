@@ -352,7 +352,7 @@ function gameStart(){
 
         // рождение монстра
         if (spawnTimer == 1000){
-            // spawnTimer= 0
+            spawnTimer= 0
             let monster = new Monster('monster')
             monster.doBorn(Math.random() * 750, Math.random() * 750)
             allMonsters.push(monster)
