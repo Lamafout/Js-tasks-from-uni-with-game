@@ -187,11 +187,13 @@ function gameStart(){
 
     //отслеживание положения курсора мыши
     let cursorX, cursorY
-    // TODO починить то, что курсор слетает при наведении непосредственно на врага/препятитствие
-    gameContent.addEventListener('mousemove', (event)=>{
-        cursorX = event.offsetX
-        cursorY = event.offsetY
+    gameMap.addEventListener('mousemove', (event)=>{
+        const rect = gameMap.getBoundingClientRect()
+        cursorX = event.clientX - rect.left
+        cursorY = event.clientY - rect.top
+        console.log(cursorX, cursorY)
     })
+    
 
     //обработка выстрела по левому клику мыши
     gameMap.addEventListener('mousedown', (event)=>{
@@ -320,7 +322,7 @@ function gameStart(){
 
         // рождение монстра
         if (spawnTimer == 1000){
-            spawnTimer= 0
+            // spawnTimer= 0
             let monster = new Monster('monster')
             monster.doBorn(Math.random() * 750, Math.random() * 750)
             allMonsters.push(monster)
@@ -531,7 +533,7 @@ function autoMove(character, speed){
 }
 
 // конец игры, появляется при смерти гг
-// TODO допилить. Сейчас я на этапе того, что мне надо реализовать появление очков
+// TODO допилить. Сейчас я на этапе того, что мне надо сделать покрасивше
 function gameOver(){
     clearInterval(timeoutId)
     clearMap()
