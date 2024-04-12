@@ -340,23 +340,25 @@ th{
 .gameMap{
     width: 750px;
     height: 750px;
-    background-color: rgb(218, 161, 209);
+    background-image: url('./images/floor.jpg');
+    background-repeat: repeat;
     position: relative;
 }
 .gameCharacter{
     display: flex;
     transform: rotate(0deg);
     position: absolute;
-    border: 2px black solid;
     z-index: 2;
 }
 .gameBullet{
-    width: 10px;
-    height: 5px;
-    background-color: black;
+    width: 8px;
+    height: 2px;
+    background-color: yellow;
+    border: 3px black solid;
     transform: rotate(0deg);
     position: absolute;
     z-index: 1;
+    border-radius: 0 5px 5px 0;
 }
 .monster{
     transform: rotate(0deg);
@@ -365,7 +367,9 @@ th{
     opacity: 1;
 }
 .gameWall{
-    background-color:brown;
+    background-image: url('./images/kirpich.jpg');
+    background-repeat: repeat;
+    box-shadow: 0 0 30px black;
     z-index: 3;
     position: absolute;
 }

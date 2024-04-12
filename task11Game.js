@@ -9,6 +9,7 @@ class Monster{
         this.health = 10
         this.lookSide
         this.damage = 10
+        this.imagePath
     }
 
     draw(){
@@ -19,10 +20,10 @@ class Monster{
         this.div.style.top = this.positionY + 'px'
         this.div.style.transform = 'rotate(' + this.lookSide + 'deg' + ')'
         let image = document.createElement('img')
-        image.src = './images/policeStand1.png'
         image.style.width = '76px'
         image.style.height = '36px'
         this.div.appendChild(image)
+        image.setAttribute('src', this.imagePath)
     }
 
     doBorn(posX, posY) {
@@ -41,7 +42,6 @@ class Monster{
     
 
     getDamage(damage){
-        this.div.style.backgroundColor = 'red'
         this.health -= damage
         if (this.health <= 0){
             this.doDie()
@@ -164,6 +164,7 @@ function gameStart(){
     // создание переменнлй для подсчёта очков
     score = 0
     timeBonus = 1000
+    let animationInterval
     
     //создание карты
     let gameMap = document.createElement('div')
@@ -174,6 +175,7 @@ function gameStart(){
     let gamer = new Human('gameCharacter')
     gamer.doBorn(350, 350)
     gamer.draw()
+    let gamerImage = false
 
     //скорость мностров  игрока
     let speedMonster = 5
@@ -196,7 +198,6 @@ function gameStart(){
         const rect = gameMap.getBoundingClientRect()
         cursorX = event.clientX - rect.left
         cursorY = event.clientY - rect.top
-        console.log(cursorX, cursorY)
     })
     
 
@@ -247,7 +248,7 @@ function gameStart(){
     
 
     //глобальный таймер
-    let spawnTimer = 0, scoreTimer = 0
+    let spawnTimer = 0, scoreTimer = 0, animationTimer = 0
     function perTime(){
         //подсчёт очков времени
         scoreTimer += 15
@@ -256,13 +257,37 @@ function gameStart(){
             scoreTimer = 0
         }
 
-        // поворот персонажа
+        // поворот и отрисовка персонажа
+        if (gamerImage){
+            gamer.imagePath = './images/policeStand1.png'
+            console.log('change1')
+        }
+        else{
+            gamer.imagePath = './images/policeStand2.png'
+            console.log('change2')
+        }
         turnCharacter(gamer, cursorX, cursorY)
 
         // полёт пуль
         allBullets.forEach((bullet)=>{
             bullet.fly()
         })
+
+        // анимация движения персонажа
+        if (isWalkingDown || isWalkingRight || isWalkingLeft || isWalkingUp) {
+            animationTimer += 15
+            if (gamerImage && animationTimer >= 150){
+                gamerImage = false
+                animationTimer = 0
+            }
+            else if (!gamerImage && animationTimer >= 150){
+                gamerImage = true
+                animationTimer = 0
+            }
+        }
+        else{
+            gamerImage = false
+        }
 
         // ХОДЬБА в стороны, которые были выбраны игроком
         if (isWalkingUp) {
@@ -327,10 +352,11 @@ function gameStart(){
 
         // рождение монстра
         if (spawnTimer == 1000){
-            spawnTimer= 0
+            // spawnTimer= 0
             let monster = new Monster('monster')
             monster.doBorn(Math.random() * 750, Math.random() * 750)
             allMonsters.push(monster)
+            monster.imagePath = './images/policeStand1.png'
             monster.draw()
         }
 
