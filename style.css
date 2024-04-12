@@ -344,11 +344,10 @@ th{
     position: relative;
 }
 .gameCharacter{
-    width: 50px;
-    height: 50px;
-    background-color: blue;
+    display: flex;
     transform: rotate(0deg);
     position: absolute;
+    border: 2px black solid;
     z-index: 2;
 }
 .gameBullet{
@@ -360,9 +359,6 @@ th{
     z-index: 1;
 }
 .monster{
-    width: 50px;
-    height: 50px;
-    background-color: rgb(51, 123, 20);
     transform: rotate(0deg);
     position: absolute;
     z-index: 2;

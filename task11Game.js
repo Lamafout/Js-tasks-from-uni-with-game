@@ -18,6 +18,11 @@ class Monster{
         this.div.style.left = this.positionX + 'px'
         this.div.style.top = this.positionY + 'px'
         this.div.style.transform = 'rotate(' + this.lookSide + 'deg' + ')'
+        let image = document.createElement('img')
+        image.src = './images/policeStand1.png'
+        image.style.width = '76px'
+        image.style.height = '36px'
+        this.div.appendChild(image)
     }
 
     doBorn(posX, posY) {
