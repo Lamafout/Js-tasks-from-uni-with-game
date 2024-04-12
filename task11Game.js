@@ -8,6 +8,7 @@ class Monster{
         this.positionY = 0
         this.health = 10
         this.lookSide
+        this.damage = 10
     }
 
     draw(){
@@ -30,6 +31,7 @@ class Monster{
             allMonsters.splice(index, 1)
         }
         this.div.remove()
+        score += 250
     }
     
 
@@ -55,6 +57,12 @@ class Human extends Monster{
     shoot(cursorX, cursorY){
         let bullet = new Bullet(this.positionX, this.positionY, this.lookSide, cursorX, cursorY)
         bullet.draw()
+    }
+
+    doDie(){
+        super.doDie()
+        score -= 750
+        gameOver()
     }
 }
 
@@ -122,7 +130,12 @@ let allMonsters = []
 let allBullets = []
 let allWalls = []
 
+let score, timeBonus
+
+let timeoutId
+
 // обработчик play menu
+let gameContent = document.querySelector('.game')
 let playButton = document.querySelector('.playButton')
 let playMenu = document.querySelector('.playMenu')
 playButton.addEventListener('click', (event)=>{
@@ -140,8 +153,10 @@ function gameStart(){
     //удаление игрового меню
     playMenu.remove()
     playButton.remove()
-    let gameContent = document.querySelector('.game')
 
+    // создание переменнлй для подсчёта очков
+    score = 0
+    timeBonus = 1000
     
     //создание карты
     let gameMap = document.createElement('div')
@@ -223,8 +238,15 @@ function gameStart(){
     
 
     //глобальный таймер
-    let fiveSeconds = 0
+    let spawnTimer = 0, scoreTimer = 0
     function perTime(){
+        //подсчёт очков времени
+        scoreTimer += 15
+        if (scoreTimer == 3000){
+            timeBonus *= 0.9
+            scoreTimer = 0
+        }
+
         // поворот персонажа
         turnCharacter(gamer, cursorX, cursorY)
 
@@ -291,12 +313,12 @@ function gameStart(){
             }
         }
 
-        // отсчёт 5 секунд
-        fiveSeconds += 10
+        // отсчёт таймера для рождения монстра
+        spawnTimer += 10
 
         // рождение монстра
-        if (fiveSeconds == 1000){
-            // fiveSeconds = 0
+        if (spawnTimer == 1000){
+            spawnTimer= 0
             let monster = new Monster('monster')
             monster.doBorn(Math.random() * 750, Math.random() * 750)
             allMonsters.push(monster)
@@ -449,6 +471,10 @@ function gameStart(){
                     }
                 }
             }
+            // если монстр достиг игрока
+            else{
+                gamer.getDamage(monster.damage)
+            }
         })
 
         // достигание пуль монстров 
@@ -475,8 +501,13 @@ function gameStart(){
             })
         })
 
-        setTimeout(perTime, 15)
+        // достигание игрока монстрами
+        allMonsters.forEach((monster) =>{
+
+        })
+
     }
+    timeoutId = setInterval(perTime, 15)
     perTime()
 }
 
@@ -495,4 +526,28 @@ function autoMove(character, speed){
     character.div.style.top = character.positionY + 'px'
     character.div.style.left += character.positionX + 'px'
     character.div.style.top += character.positionY + 'px'
+}
+
+// конец игры, появляется при смерти гг
+// TODO допилить. Сейчас я на этапе того, что мне надо реализовать появление игрового меню
+function gameOver(){
+    clearInterval(timeoutId)
+    clearMap()
+    createGameOverMenu()
+}
+
+function clearMap(){
+    let childList = Array.from(gameContent.children)
+    childList.forEach(el => el.remove())
+}
+
+function createGameOverMenu(){
+    // let menuBackground = document.createElement('div')
+    // menuBackground.className ='playMenu'
+    // let menuButton = document.createElement('input')
+    // menuButton.setAttribute('type', 'button')
+    // menuButton.setAttribute('src', './images/rightArrow.png')
+    // menuButton.className = 'playButton'
+    gameContent.appendChild(playMenu)
+    playMenu.appendChild(playButton)
 }
