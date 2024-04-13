@@ -376,3 +376,7 @@ th{
 .playScore{
     font-size: 30px;
 }
+.recordScoreList{
+    padding-left: 40%;
+    display: none;
+}

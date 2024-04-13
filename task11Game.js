@@ -158,6 +158,7 @@ let gameContent = document.querySelector('.game')
 let playButton = document.querySelector('.playButton')
 let playMenu = document.querySelector('.playMenu')
 let playScore = document.querySelector('.playScore')
+let recordList = document.querySelector('.recordScoreList')
 playButton.addEventListener('click', (event)=>{
     event.stopPropagation()
     gameStart()
@@ -197,9 +198,11 @@ function gameStart(){
     
     // появление препятствий
     let wall1 = new Wall()
-    wall1.doBorn(100, 100, 50, 300)
+    wall1.doBorn(100, 100, 50, 200)
     let wall2 = new Wall()
-    wall2.doBorn(550, 300, 50, 300)
+    wall2.doBorn(600, 100, 50, 200)
+    let wall3 = new Wall()
+    wall3.doBorn(250, 550, 250, 50)
 
     //обработка кликов по игрвому полю
     gameContent.addEventListener('click', (event)=>{
@@ -382,8 +385,8 @@ function gameStart(){
                 spawnX = Math.random() * 750, spawnY = Math.random() * 750
                 spawnFlag = true
                 allWalls.forEach(wall =>{
-                    if ((spawnX > wall.positionX) && (spawnX < wall.positionX + wall.div.offsetWidth)
-                    && (spawnY > wall.positionY) && (spawnY < wall.positionY + wall.div.offsetHeight)) {
+                    if (((spawnX > wall.positionX) && (spawnX < wall.positionX + wall.div.offsetWidth))
+                    && ((spawnY > wall.positionY) && (spawnY < wall.positionY + wall.div.offsetHeight))) {
                         spawnFlag = false
                         console.log('spawn')
                         return
@@ -605,7 +608,6 @@ function autoMove(character, speed){
 }
 
 // конец игры, появляется при смерти гг
-// TODO допилить. Сейчас я на этапе того, что мне надо сделать покрасивше
 function gameOver(){
     clearInterval(timeoutId)
     clearMap()
@@ -627,7 +629,44 @@ function createGameOverMenu(){
     gameContent.appendChild(playMenu)
     playMenu.appendChild(playButton)
 
-    playScore.innerHTML = Math.floor(score + timeBonus) + ' очков'
+    let totalScore = Math.floor(score + timeBonus)
+    playScore.innerHTML = totalScore + ' очков'
     playMenu.appendChild(playScore)
+
+    // список рекордов
+    // чтение из localstorage
+    // Array.from(recordList.children).reverse().forEach((el, index) => {
+    //     el.innerHTML = localStorage.getItem(index)
+    // })
+
+    // Array.from(recordList.children).reverse().forEach((el, index) =>{
+    //     let temp = el.innerHTML
+    //     if (index == 0 && totalScore > el.innerHTML && totalScore < Array.from(recordList.children).reverse()[index+1]){
+    //         el.innerHTML = totalScore
+    //         return
+    //     }
+    //     if (index == 4 && totalScore > el.innerHTML){
+    //         el.innerHTML = totalScore
+    //         index--
+    //         while(index){
+    //             recordList.children[index - 1] = Array.from(recordList.children).reverse()[index]
+    //             index--
+    //         }
+    //         return
+    //     }
+    //     if (totalScore > el.innerHTML && totalScore < Array.from(recordList.children).reverse()){
+    //         el.innerHTML = totalScore
+    //         index--
+    //         while(index){
+    //             recordList.children[index - 1] = Array.from(recordList.children).reverse()[index]
+    //             index--
+    //         }
+    //         return
+    //     }
+    // })
+    // recordList.style.display = 'block'
+
+    // // запись в localstorage
+    // Array.from(recordList.children).reverse().forEach((el, index) => localStorage.setItem(index, el.innerHTML))
 }
 // TODO таблица рекордов
